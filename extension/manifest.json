@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "SlideWeave - AI Collaborator for Google Slides",
+  "version": "1.0.0",
+  "description": "AI-powered suggestions for Google Slides. AI suggests, you decide.",
+  "permissions": [
+    "storage",
+    "identity",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://docs.google.com/presentation/*",
+    "https://www.googleapis.com/*",
+    "https://api.anthropic.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://docs.google.com/presentation/*"],
+      "js": ["content.js"],
+      "css": ["sidebar.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "oauth2": {
+    "client_id": "739393171859-lq7qdffdch7pad4lgfdo0fa4q1b5ijcl.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/presentations",
+      "https://www.googleapis.com/auth/drive.file"
+    ]
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["sidebar.html"],
+      "matches": ["https://docs.google.com/*"]
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

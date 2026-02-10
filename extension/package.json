@@ -1,0 +1,35 @@
+{
+  "name": "slideweave-extension",
+  "version": "1.0.0",
+  "description": "AI-powered suggestions for Google Slides. AI suggests, you decide.",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development --watch",
+    "package": "cd dist && zip -r slideweave-extension.zip *"
+  },
+  "keywords": [
+    "chrome-extension",
+    "google-slides",
+    "ai",
+    "claude"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "build": "0.1.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/preset-react": "^7.24.7",
+    "babel-loader": "^9.2.1",
+    "canvas": "3.2.1",
+    "copy-webpack-plugin": "^12.0.2",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.0",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4"
+  }
+}

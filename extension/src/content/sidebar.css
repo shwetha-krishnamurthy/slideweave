@@ -1,0 +1,18 @@
+/* Adjust Google Slides layout to make room for sidebar */
+#slideweave-sidebar {
+  transition: transform 0.3s ease;
+}
+
+#slideweave-sidebar.hidden {
+  transform: translateX(100%);
+}
+
+/* Push Google Slides content left when sidebar is open */
+body.slideweave-active {
+  margin-right: 400px !important;
+}
+
+/* Ensure the sidebar is on top of everything */
+#slideweave-sidebar {
+  pointer-events: auto;
+}
