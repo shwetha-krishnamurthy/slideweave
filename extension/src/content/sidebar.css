@@ -1,18 +1,16 @@
-/* Adjust Google Slides layout to make room for sidebar */
-#slideweave-sidebar {
-  transition: transform 0.3s ease;
+/* Collapse button inside the drag handle */
+#slideweave-collapse-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.85;
 }
 
-#slideweave-sidebar.hidden {
-  transform: translateX(100%);
-}
-
-/* Push Google Slides content left when sidebar is open */
-body.slideweave-active {
-  margin-right: 400px !important;
-}
-
-/* Ensure the sidebar is on top of everything */
-#slideweave-sidebar {
-  pointer-events: auto;
+#slideweave-collapse-btn:hover {
+  opacity: 1;
 }

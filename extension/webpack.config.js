@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
+  devtool: false,
   entry: {
     'background': './src/background/service-worker.js',
     'content': './src/content/content.js',
@@ -55,7 +56,6 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx']
   },
-  watch: true,
   watchOptions: {
     ignored: /node_modules/
   }

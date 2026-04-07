@@ -1,39 +1,59 @@
 import React, { useState, useEffect } from 'react';
-import ChatView from './components/ChatView';
-import SuggestionsView from './components/SuggestionsView';
+import MakeEditableView from './components/MakeEditableView';
 import Settings from './components/Settings';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('chat');
+  const [showSettings, setShowSettings] = useState(false);
   const [hasApiKey, setHasApiKey] = useState(false);
   const [presentationId, setPresentationId] = useState(null);
+  const [currentSlideId, setCurrentSlideId] = useState(null);
+  const [autoScan, setAutoScan] = useState(false);
 
   useEffect(() => {
     checkAuth();
-    setupMessageListener();
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
   }, []);
 
   const checkAuth = async () => {
-    try {
-      const result = await chrome.storage.sync.get('claudeApiKey');
-      setHasApiKey(!!result.claudeApiKey);
-      console.log('[SlideWeave] API key status:', !!result.claudeApiKey);
-    } catch (error) {
-      console.error('[SlideWeave] Error checking auth:', error);
-    }
+    const result = await chrome.storage.sync.get('claudeApiKey');
+    setHasApiKey(!!result.claudeApiKey);
   };
 
-  const setupMessageListener = () => {
-    window.addEventListener('message', (event) => {
-      if (event.data.type === 'PRESENTATION_ID') {
-        setPresentationId(event.data.data);
-        console.log('[SlideWeave] Presentation ID:', event.data.data);
-      }
-    });
+  const handleMessage = (event) => {
+    if (event.data.type === 'PRESENTATION_ID') {
+      const { presentationId, slideId } = event.data.data;
+      setPresentationId(presentationId);
+      setCurrentSlideId(slideId);
+    }
+    if (event.data.type === 'SLIDE_CHANGED') {
+      setCurrentSlideId(event.data.data.slideId);
+    }
+    if (event.data.type === 'TRIGGER_MAKE_EDITABLE') {
+      setShowSettings(false);
+      setAutoScan(true);
+    }
   };
 
   if (!hasApiKey) {
     return <Settings onApiKeySaved={() => setHasApiKey(true)} />;
+  }
+
+  if (showSettings) {
+    return (
+      <div className="slideweave-app">
+        <header className="app-header">
+          <div className="logo">
+            <span className="logo-icon">✨</span>
+            <span className="logo-text">SlideWeave</span>
+          </div>
+          <button className="settings-btn" onClick={() => setShowSettings(false)} title="Back">
+            ✕
+          </button>
+        </header>
+        <Settings onApiKeySaved={() => setShowSettings(false)} />
+      </div>
+    );
   }
 
   return (
@@ -43,34 +63,17 @@ function App() {
           <span className="logo-icon">✨</span>
           <span className="logo-text">SlideWeave</span>
         </div>
-        <button 
-          className="settings-btn" 
-          onClick={() => setActiveTab('settings')}
-          title="Settings"
-        >
+        <button className="settings-btn" onClick={() => setShowSettings(true)} title="Settings">
           ⚙️
         </button>
       </header>
-
-      <nav className="tab-nav">
-        <button 
-          className={activeTab === 'chat' ? 'active' : ''}
-          onClick={() => setActiveTab('chat')}
-        >
-          💬 Chat
-        </button>
-        <button 
-          className={activeTab === 'suggestions' ? 'active' : ''}
-          onClick={() => setActiveTab('suggestions')}
-        >
-          📋 Suggestions
-        </button>
-      </nav>
-
       <main className="app-content">
-        {activeTab === 'chat' && <ChatView presentationId={presentationId} />}
-        {activeTab === 'suggestions' && <SuggestionsView presentationId={presentationId} />}
-        {activeTab === 'settings' && <Settings onApiKeySaved={() => {}} />}
+        <MakeEditableView
+          presentationId={presentationId}
+          currentSlideId={currentSlideId}
+          autoScan={autoScan}
+          onAutoScanDone={() => setAutoScan(false)}
+        />
       </main>
     </div>
   );

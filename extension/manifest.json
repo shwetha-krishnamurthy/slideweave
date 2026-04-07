@@ -6,12 +6,14 @@
   "permissions": [
     "storage",
     "identity",
-    "activeTab"
+    "activeTab",
+    "contextMenus"
   ],
   "host_permissions": [
     "https://docs.google.com/presentation/*",
     "https://www.googleapis.com/*",
-    "https://api.anthropic.com/*"
+    "https://api.anthropic.com/*",
+    "https://*.googleusercontent.com/*"
   ],
   "background": {
     "service_worker": "background.js"
