@@ -1,3 +1,6 @@
+A Chrome extension that converts Nano Banana Pro generated images into fully editable Google Slides.
+
+
 # SlideWeave
 
 A Chrome extension that converts [Nano Banana Pro](https://blog.google/innovation-and-ai/products/nano-banana-pro/) generated images into fully editable Google Slides.
